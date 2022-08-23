@@ -44,8 +44,7 @@ app.use((err, req, res, next) => {
     return res.status(errorStatus).json({
         success: false,
         error: errorStatus,
-        message: errorMessage,
-        stack: error.stack
+        message: errorMessage
     });
 });
 
