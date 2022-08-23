@@ -2,6 +2,8 @@ import express from "express";
 import {
     createHotelController, 
     deleteHotelController, 
+    getHotelController, 
+    getHotelsController, 
     updateHotelController 
 } from "../controllers/hotel.js";
 import Hotel from "../models/Hotel.js";
@@ -18,25 +20,9 @@ router.put("/:id", updateHotelController);
 router.delete("/:id", deleteHotelController);
 
 //GET
-router.get("/:id", async (req, res) => {
-    
-    try {
-        const hotel = await Hotel.findById(req.params.id);
-        res.status(200).json(hotel);
-    }catch(err) {
-        res.status(500).json(err);
-    }
-});
+router.get("/:id", getHotelController);
 
 //GET ALL
-router.get("/", async (req, res) => {
-    
-    try {
-        const hotels = await Hotel.find();
-        res.status(200).json(hotels);
-    }catch(err) {
-        next(err);
-    }
-});
+router.get("/", getHotelsController);
 
 export default router;
