@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcryptjs from "bcryptjs";
 import { createError } from "../utils/error.js";
+import jwt from "jsonwebtoken";
 
 export const registerController = async (req, res, next) => {
     try {
@@ -27,9 +28,12 @@ export const loginController = async (req, res, next) => {
         const isCorrectPassword = bcryptjs.compareSync(req.body.password, user.password);
         if(!isCorrectPassword) return next(createError(400, "Wrong password or username"));
 
-        const {password, isAdmin, ...otherDetails} = user._doc;
+        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
 
-        res.status(200).json({...otherDetails});
+        const {password, isAdmin, ...otherDetails} = user._doc;
+        res.cookie("access_token", token, {
+            httpOnly: true
+        }).status(200).json({...otherDetails});
     } catch (err) {
         next(err);
     }
