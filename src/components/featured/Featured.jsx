@@ -14,7 +14,7 @@ const Featured = () => {
         <div className="featuredItem">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpeJnfgQej_V5Q7h3zH3CRZx9GG9uzTKqmU5401euZbQ&s" alt="" className="featuredImg" />
             <div className="featuredTitles">
-                <h1>Auston</h1>
+                <h1>Austin</h1>
                 <h2>512 properties</h2>
             </div>
         </div>
