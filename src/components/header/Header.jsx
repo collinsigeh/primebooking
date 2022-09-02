@@ -6,8 +6,10 @@ import "./header.css";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({type}) => {
+    const [destination, setDestination] = useState("");
     const [showDate, setShowDate] = useState(false);
     const [date, setDate] = useState([
         {
@@ -23,15 +25,21 @@ const Header = ({type}) => {
         room: 1
     });
 
+    const navigate = useNavigate();
+
     const handleOption = (name, operation) => {
         setOptions(prev => {
             return { ...prev, [name]: operation === "i" ? options[name] + 1 : options[name] - 1}
         });
     }
 
+    const handleSearch = () => {
+        navigate("/hotels", { state: { destination, date, options }});
+    }
+
   return (
     <div className="header">
-        <div className={type == "list"? "headerContainer listMode" : "headerContainer"}>
+        <div className={type === "list"? "headerContainer listMode" : "headerContainer"}>
             <div className="headerList">
                 <div className="headerListItem active">
                     <FontAwesomeIcon icon={ faBed } />
@@ -47,7 +55,7 @@ const Header = ({type}) => {
                 </div>
                 <div className="headerListItem">
                     <FontAwesomeIcon icon={ faBed } />
-                    <span>Attractionss</span>
+                    <span>Attractions</span>
                 </div>
                 <div className="headerListItem">
                     <FontAwesomeIcon icon={ faTaxi } />
@@ -69,7 +77,8 @@ const Header = ({type}) => {
                 <div className="headerSearch">
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={ faBed } className="headerIcon" />
-                        <input type="text" placeholder="Where are you going?" className="headerSearchInput" />
+                        <input type="text" placeholder="Where are you going?"
+                            onChange={e => setDestination(e.target.value)} className="headerSearchInput" />
                     </div>
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={ faCalendarDays } className="headerIcon" />
@@ -84,6 +93,7 @@ const Header = ({type}) => {
                             moveRangeOnFirstSelection={false}
                             ranges={date}
                             className="date"
+                            minDate={new Date()}
                         />}
                     </div>
                     <div className="headerSearchItem">
@@ -128,7 +138,7 @@ const Header = ({type}) => {
                         }
                     </div>
                     <div className="headerSearchItem">
-                        <button className="headerBtn">Search</button>
+                        <button className="headerBtn" onClick={handleSearch}>Search</button>
                     </div>
                 </div>
                 </>
